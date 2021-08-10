@@ -3,10 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Container from 'react-bootstrap/container';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import NavBar from './NavBar';
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <NavBar />
+      <Container>
+      <App />
+      </Container>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -43,3 +43,9 @@
 .modal-dialog {
   max-width: 90%!important;
 }
+
+.alRight {
+  text-align: right;
+  font-size: 8pt;
+  vertical-align: middle;
+}

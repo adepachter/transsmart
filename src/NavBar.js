@@ -15,10 +15,11 @@ function NavBar() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link><Link to="/">Home</Link></Nav.Link>
+              <Nav.Link><Link to="/incoming">Incoming</Link></Nav.Link>
               <Nav.Link><Link to="/shipments">Shipments</Link></Nav.Link>
               <NavDropdown title="Acties" id="basic-nav-dropdown">
                 <NavDropdown.Item><Link to="/delete">Delete shipment</Link></NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+                <NavDropdown.Item href="/addnew">Add shipment</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>

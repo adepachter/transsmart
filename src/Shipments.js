@@ -73,11 +73,13 @@ class Shipments extends React.Component {
             case "DEL":
                 return <Badge bg="dark">Deleted</Badge>;
             case "LABL":
-                return <Badge bg="success">Done</Badge>;
+                return <Badge bg="success">Label</Badge>;
             case "ERR":
                 return <Badge bg="danger">Error</Badge>;
             case "NEW":
                 return <Badge bg="info">Nieuw</Badge>;
+            case "DONE":
+                return <Badge bg="info">Done</Badge>;
             default:
                 return <Badge bg="warning">!</Badge>;
         }
@@ -164,7 +166,7 @@ class FetchShipmentDetails extends React.Component {
         
         const { shows } = this.state;
         
-        //console.log(this.props.shipment);
+        console.log(this.props.shipment);
         const ship = this.props.shipment;
 
         const handleClose = () => {

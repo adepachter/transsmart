@@ -84,6 +84,8 @@ class Shipments extends React.Component {
                 return <Badge bg="warning">!</Badge>;
         }
     }
+
+
  
 
     
@@ -121,7 +123,7 @@ render() {
                 <td>{ship.carrier}</td>
                 <td>{ship.pickupDate}</td>
                 <td>{this.StatusLabel(ship.shipmentStatusCode)}</td>
-                <td><a href={ship.trackingAndTraceUrl}>Klik hier!</a></td>
+                <td><a href={ship.trackingAndTraceUrl} rel="noreferrer" target="_blank">Klik hier!</a></td>
                
             </tr>
             
@@ -161,12 +163,69 @@ class FetchShipmentDetails extends React.Component {
                 return <Badge bg="warning">!</Badge>;
         }
     }
+
+    GetLabels(reference) {
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Basic YXBpQGJ1cm9mb3JtLmJlOm5MZjNhJU5Yc2FQeSU9TUM=");    
+        var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+        };
+    
+        fetch("https://accept-api.transsmart.com/login", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            //console.log(result.token)
+            ///////////////// FETCH WITH BEARER FROM ABOVE
+                var token = "Bearer " + result.token;
+                var myHeaders = new Headers();
+                myHeaders.append("Authorization", token);
+                var url = "https://accept-api.transsmart.com/v2/prints/BUROFORM/" + reference + "?rawJob=true";
+                var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+                };
+
+                fetch(url, requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    var packageDocs = result[0].packageDocs;
+                    //console.log(packageDocs);
+                    packageDocs.map(element => {
+                        //console.log(element.data);
+                        var pdf = element.data;
+                            const linkSource = `data:application/pdf;base64,${pdf}`;
+                            const downloadLink = document.createElement("a");
+                            const fileName = "label" + reference + ".pdf";
+                        
+                            downloadLink.href = linkSource;
+                            downloadLink.download = fileName;
+                            downloadLink.click();
+                            return console.log("labels ok");
+                    })
+                
+                    
+                })
+                .catch(error => console.log('error', error));
+
+                
+
+            //////////////////////////////////////////////
+
+            
+        })
+        .catch(error => console.log('error', error));
+
+    }
     
     render() {
         
         const { shows } = this.state;
         
-        console.log(this.props.shipment);
+        //console.log(this.props.shipment);
         const ship = this.props.shipment;
 
         const handleClose = () => {
@@ -244,7 +303,7 @@ class FetchShipmentDetails extends React.Component {
                 <Container>
                     <Row>
                         <Col>
-                        Track and Trace: <a href={ship.trackingAndTraceUrl}>Klik hier</a><br />
+                        Track and Trace: <a href={ship.trackingAndTraceUrl} rel="noreferrer" target="_blank">Klik hier</a><br />
                         Gewicht: {ship.calculatedWeight}<br />
                         Koerier: {ship.carrier}<br />
                         Service: {ship.executedServiceLevelTime}
@@ -255,6 +314,7 @@ class FetchShipmentDetails extends React.Component {
                         </Col>
                     </Row>
                 </Container>
+                <Button variant="success" onClick={() => this.GetLabels(ship.reference)}>Labels</Button>
 
 
             </Modal.Body>

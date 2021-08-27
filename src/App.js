@@ -6,10 +6,13 @@ import { Route, Switch } from 'react-router-dom';
 import DeleteShip from './DeleteShip';
 import IncomingOrders from './IncomingOrders';
 import NewOrder from './NewOrder';
+import axios from 'axios';
 
 
 
-function App() {
+class App extends React.Component {
+
+render() {
   return (
     <main>
       <Switch>
@@ -21,6 +24,7 @@ function App() {
       </Switch>
     </main>
   );
+}
 }
 
 export default App;

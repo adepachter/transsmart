@@ -19,9 +19,11 @@ class IncomingOrders extends React.Component {
             senderDetail: [],
             recDetail: [],
             packages: null,
+            inkoorders: [],
             show: false
         }
     }
+
 
     componentDidMount = async () =>  {
         try {
@@ -30,6 +32,24 @@ class IncomingOrders extends React.Component {
           } catch (error) {
             this.setState({ error });
           }
+
+
+          ///// GET INKO ORDERS
+        var data = '{"user": "arno", "password": "18e95342f51949e5823dbf5bcdceb5efd649b159580d406ea9690db23f2a4763"}';
+        var config = {
+            method: 'post',
+            url: 'https://www.inkoprint.innomedio.dev/api/getOrders',
+            data : data
+        };
+    
+        axios(config)
+            .then(function (response) {
+                var orders = response.data.shipments;
+                console.log(orders);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     StatusLabel(stat) {
@@ -39,7 +59,7 @@ class IncomingOrders extends React.Component {
             case "Nieuw":
                 return <Badge bg="info">Nieuw</Badge>;
             case "Verzenden":
-                return <Badge bg="warning">Verzenden?</Badge>;
+                return <Badge bg="success">Transsmart</Badge>;
             case "Verstuurd":
                 return <Badge bg="success">Verstuurd</Badge>;
             default:
@@ -50,41 +70,160 @@ class IncomingOrders extends React.Component {
     PostStrapi(detail) {
             var type = document.getElementById("typebox").value;
             var aantal = document.getElementById("aantalcolli").value;
-            var description = document.getElementById("descriptionPack").value;
             var carrier = document.getElementById("carrier").value;
+            var pickupdate = document.getElementById("pickupdate").value;
             var url = 'http://localhost:1337/orders/' + detail.id;
-            var objPackage = {};
+        
+            
+            var packages = [];
+
+            for (let i = 0; i < aantal; i++) {
+                packages.push({
+                        "lineNo": i+1,
+                        "packageType": type,
+                        "description": "",
+                        "quantity": 1,
+                        "carrier": carrier,
+                        "measurements": {
+                            "length": 30.00,
+                            "width": 20.00,
+                            "height": 10.00,
+                            "weight": 1.00,
+                            "linearUom": "CM",
+                            "massUom": "KG"
+                        }
+                })
+            }
+            var pack = {
+                "package": packages
+                
+            };
 
 
+            console.log(packages);
+            console.log(pack);
+
+
+            //POST ORDER PACKAGES TO DATABASE
             axios
-              .put(url, {
-                  
-                  package: [
-                      {
-                          "lineNo": 1,
-                          "packageType": type,
-                          "description": description,
-                          "quantity": aantal,
-                          "carrier": carrier
-                      }
-                  ]
+            .put(url, pack)
+            .then(response => {
+                console.log(response);
+                axios.put(url,{
+                  Status: "Verzenden"
               })
               .then(response => {
                   console.log(response);
-                  axios.put(url,{
-                    Status: "Verzenden"
+                  var orderresponse = {};
+                  //GET ORDER COMPLETE FROM DATABASE
+                    axios
+                    .get(url)
+                    .then(response => {
+                        orderresponse = response.data;
+                        console.log(orderresponse);
+                        console.log("HELLOOOO");
+                                            // TO TRANSSMART
+                    var orderJson = JSON.stringify([{
+                        
+                        "reference": orderresponse.reference,
+                        "carrier": carrier,
+                        "value": 25,
+                        "valueCurrency": "EUR",
+                        "pickupDate": pickupdate,
+                        "service": "NON-DOCS",
+                        "serviceLevelTime": "EUROPLUS",
+                        "serviceLevelOther": "",
+                        "incoterms": "CPT",
+                        "numberOfPackages": parseInt(aantal),
+                        "measurements": {
+                                   "length": 30.0,
+                                   "width": 20.0,
+                                   "height": 10.0,
+                                   "weight": 1.0,
+                                   "linearUom": "CM",
+                                   "massUom": "KG"
+                             },
+                        "addresses": [
+                            {
+                                "type": "RECV",
+                                "name": orderresponse.receiver.name,
+                                "addressLine1": orderresponse.receiver.addressLine1, 
+                                "addressLine2": orderresponse.receiver.addressLine2,
+                                "houseNo": orderresponse.receiver.houseNo,
+                                "city": orderresponse.receiver.city,
+                                "zipCode": orderresponse.receiver.zipCode,
+                                "country": orderresponse.receiver.country,
+                                "contact": orderresponse.receiver.contact,
+                                "email": orderresponse.receiver.email
+                            }, 
+                            {
+                                "type": "SEND",
+                                "name": orderresponse.sender.name,
+                                "addressLine1": orderresponse.sender.addressLine1, 
+                                "addressLine2": orderresponse.sender.addressLine2,
+                                "houseNo": orderresponse.sender.houseNo,
+                                "city": orderresponse.sender.city,
+                                "zipCode": orderresponse.sender.zipCode,
+                                "country": orderresponse.sender.country,
+                                "contact": orderresponse.sender.contact,
+                                "email": orderresponse.sender.email
+                            }
+                        ],
+                        "packages": packages
+                    
+                }]);
+
+                console.log(orderJson);
+                console.log("HELLOOOOOWWWWW");
+                
+                var myHeaders = new Headers();
+                myHeaders.append("Authorization", "Basic YXBpQGJ1cm9mb3JtLmJlOm5MZjNhJU5Yc2FQeSU9TUM="); 
+                 
+                var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+                };
+            
+                fetch("https://accept-api.transsmart.com/login", requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    //console.log(result.token)
+                    ///////////////// FETCH WITH BEARER FROM ABOVE
+                        var token = "Bearer " + result.token;
+                        var myHeaders = new Headers();
+                        myHeaders.append("Authorization", token);
+                        myHeaders.append("Content-Type", "application/json");  
+                        var requestOptions = {
+                            method: 'POST',
+                            headers: myHeaders,
+                            body: orderJson,
+                            redirect: 'follow'
+                        };
+
+                        fetch("https://accept-api.transsmart.com/v2/shipments/BUROFORM/BOOK", requestOptions)
+                        .then(response => response.json())
+                        .then(result => {
+                            console.log(result);
+                            alert("VERSTUURD NAAR TRANSSMART");
+                            this.props.history.push('/shipments/');
+                        })
+                        .catch(error => console.log('error', error));
+
+                        
+
+                    //////////////////////////////////////////////
+
+                    
                 })
-                .then(response => {
-                    console.log(response)
-                    window.location.reload(false);
-                });
-              });
+                .catch(error => console.log('error', error));
 
-             
 
-        
-        
-    }
+              //window.location.reload(false);
+          });
+        })
+        });
+        }
 
 
 
@@ -124,8 +263,8 @@ class IncomingOrders extends React.Component {
                     </Form.Group>
                 
                 <Form.Group className="mb-3" as={Col}>
-                    <Form.Label>Beschrijving</Form.Label>
-                    <Form.Control as="textarea" id="descriptionPack" rows={1} />
+                    <Form.Label>Datum (JJJJ-MM-DD)</Form.Label>
+                    <Form.Control id="pickupdate" rows={1} />
                 </Form.Group>
                 <Form.Group as={Col}><Form.Label>Dienst</Form.Label>
                 <Form.Select id="carrier" as={Col}>
@@ -138,7 +277,7 @@ class IncomingOrders extends React.Component {
                 </Row>
                 
                 <Button variant="primary" id="postPackage" onClick={() => this.PostStrapi(detail)}>
-                    Opslaan lokaal
+                    Boeken in Transsmart
                 </Button>
                 </Form></Container>
                 </>
@@ -162,13 +301,12 @@ class IncomingOrders extends React.Component {
                 <tbody>
                     {packages.map(pak => (
                         <>
-                        <tr key={pak.id}><td className="alRight"><b>LineNo</b></td><td><b>{pak.lineNo}</b></td></tr>
+                        <tr key={pak.id} ><td className="alRight"><b>LineNo</b></td><td><b>{pak.lineNo}</b></td></tr>
                         <tr><td className="alRight">Carrier</td><td>{pak.carrier}</td></tr>
                         <tr><td className="alRight">ShipmentLineID</td><td>{pak.shipmentLineId}</td></tr>
                         <tr><td className="alRight">PackageType</td><td>{pak.packageType}</td></tr>
                         <tr><td className="alRight">Beschrijving</td><td>{pak.description}</td></tr>
                         <tr><td className="alRight">Aantal</td><td>{pak.quantity}</td></tr>
-                        <tr><td className="alRight">Afmetingen</td><td>{pak.measurements}</td></tr>
                         <tr><td className="alRight">&nbsp;</td></tr>
     
                         </>
@@ -195,7 +333,9 @@ class IncomingOrders extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                    {orders.map(order =>
+                    {orders
+                    .sort((a,b) => b.id - a.id)
+                    .map(order =>
                         <>
                         <tr key={order.id} data-item={order} onClick={() => {
                             handleShow();
@@ -237,7 +377,7 @@ class IncomingOrders extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td className="alRight">Naam</td><td>{senderDetail.name}</td><td>{recDetail.name}</td></tr>
+                            <tr key={senderDetail.id}><td className="alRight">Naam</td><td>{senderDetail.name}</td><td>{recDetail.name}</td></tr>
                             <tr><td className="alRight">Contact</td><td>{senderDetail.contact}</td><td>{recDetail.contact}</td></tr>
                             <tr><td className="alRight">Adres1</td><td>{senderDetail.addressLine1} {senderDetail.houseNo}</td><td>{recDetail.addressLine1} {recDetail.houseNo}</td></tr>
                             <tr><td className="alRight">PC + stad</td><td>{senderDetail.zipCode} {senderDetail.city}</td><td>{recDetail.zipCode} {recDetail.city}</td></tr>
@@ -259,9 +399,6 @@ class IncomingOrders extends React.Component {
                         <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
                             Close
-                        </Button>
-                        <Button variant="primary" onClick={handleClose}>
-                            Save Changes
                         </Button>
                         </Modal.Footer>
                     </Modal>

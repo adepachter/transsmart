@@ -1,10 +1,89 @@
 import React from 'react';
-import { Component } from 'react';
-import { Container, Row, Col, Form } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+var axios = require('axios');
 
 class NewOrder extends React.Component {
+    
+
+    PostNewShipment() {
+        let referentie = document.getElementById("referentie").value;
+        let sendContact = document.getElementById("sendContact").value;
+        let sendHuisnr = document.getElementById("sendHuisnr").value;
+        let sendAdres1 = document.getElementById("sendAdres1").value;
+        let sendAdres2 = document.getElementById("sendAdres2").value;
+        let sendStad = document.getElementById("sendStad").value;
+        let sendPC = document.getElementById("sendPC").value;
+        let sendEmail = document.getElementById("sendEmail").value;
+        let sendName = document.getElementById("sendName").value;
+
+        let recContact = document.getElementById("recContact").value;
+        let recHuisnr = document.getElementById("recHuisnr").value;
+        let recAdres1 = document.getElementById("recAdres1").value;
+        let recAdres2 = document.getElementById("recAdres2").value;
+        let recStad = document.getElementById("recStad").value;
+        let recPC = document.getElementById("recPC").value;
+        let recEmail = document.getElementById("recEmail").value;
+        let recName = document.getElementById("recName").value;
+        console.log(sendContact);
+
+        var jsonData = {
+            "reference": referentie,
+            "Status": "Nieuw",
+            "carrier": null,
+            "sender": {
+                "contact": sendContact,
+                "houseNo": sendHuisnr,
+                "addressLine1": sendAdres1,
+                "addressLine2": sendAdres2,
+                "city": sendStad,
+                "addressLine3": null,
+                "zipCode": sendPC,
+                "state": null,
+                "country": "BE",
+                "accountNumber": null,
+                "type": null,
+                "telNo": null,
+                "email": sendEmail,
+                "name": sendName
+            },
+            "receiver": {
+                "contact": recContact,
+                "houseNo": recHuisnr,
+                "addressLine1": recAdres1,
+                "addressLine2": recAdres2,
+                "city": recStad,
+                "addressLine3": null,
+                "zipCode": recPC,
+                "state": null,
+                "country": "BE",
+                "accountNumber": null,
+                "type": null,
+                "telNo": null,
+                "email": recEmail,
+                "name": recName
+            }
+        };
+
+        console.log(jsonData);
+        var url = 'http://localhost:1337/orders/'
+        axios
+              .post(url, jsonData)
+              .then(response => {
+                  console.log(response);
+                  alert(response);
+                  this.props.history.push('/incoming/');
+              });
+
+    }
+
+    
+
 
     render() {
+
+        
+
+
         return(
             <>
             <h1>Nieuwe order aanmaken</h1>
@@ -16,51 +95,57 @@ class NewOrder extends React.Component {
                     <br></br>
                     <h2>Afzender</h2>
                     <Row className="mb-3">
-                        <Form.Group as={Col} id="sendEmail">
+                        <Form.Group as={Col}>
+                            <Form.Label>Contact</Form.Label>
+                            <Form.Control id="sendContact" />
+                        </Form.Group>
+                    </Row>
+                    <Row className="mb-3">
+                        <Form.Group as={Col}>
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" />
+                        <Form.Control type="email" placeholder="Enter email" id="sendEmail" />
                         </Form.Group>
 
-                        <Form.Group as={Col} id="sendName">
+                        <Form.Group as={Col}>
                         <Form.Label>Naam</Form.Label>
-                        <Form.Control placeholder="Naam" />
+                        <Form.Control placeholder="Naam" id="sendName" />
                         </Form.Group>
                     </Row>
 
                     <Row className="mb-3">
-                        <Form.Group as={Col} id="sendAdres1">
+                        <Form.Group as={Col}>
                         <Form.Label>Adres 1</Form.Label>
-                        <Form.Control placeholder="Grote Markt" />
+                        <Form.Control placeholder="Grote Markt" id="sendAdres1" />
                         </Form.Group>
 
-                        <Form.Group as={Col} id="sendHuisnr">
+                        <Form.Group as={Col}>
                         <Form.Label>Huisnr</Form.Label>
-                        <Form.Control placeholder="5" />
+                        <Form.Control placeholder="5" id="sendHuisnr" />
                         </Form.Group>
                     </Row>
 
                     <Row className="mb-3">
-                        <Form.Group as={Col} id="sendAdres2">
+                        <Form.Group as={Col}>
                             <Form.Label>Adres 2</Form.Label>
-                            <Form.Control />
+                            <Form.Control id="sendAdres2" />
                         </Form.Group>
                     </Row>
 
                     <Row className="mb-3">
 
-                        <Form.Group as={Col} id="sendPC">
+                        <Form.Group as={Col}>
                         <Form.Label>Postcode</Form.Label>
-                        <Form.Control />
+                        <Form.Control id="sendPC" />
                         </Form.Group>
 
-                        <Form.Group as={Col} id="sendStad">
+                        <Form.Group as={Col}>
                         <Form.Label>Stad</Form.Label>
-                        <Form.Control />
+                        <Form.Control id="sendStad" />
                         </Form.Group>
 
-                        <Form.Group as={Col} id="sendLand">
+                        <Form.Group as={Col}>
                         <Form.Label>Land</Form.Label>
-                        <Form.Select defaultValue="BE">
+                        <Form.Select defaultValue="BE" id="sendLand">
                             <option>BE</option>
                             <option>NL</option>
                             <option>FR</option>
@@ -78,51 +163,57 @@ class NewOrder extends React.Component {
                     <br></br>
                     <h2>Ontvanger</h2>
                     <Row className="mb-3">
-                        <Form.Group as={Col} id="recEmail">
+                        <Form.Group as={Col}>
+                            <Form.Label>Contact</Form.Label>
+                            <Form.Control id="recContact" />
+                        </Form.Group>
+                    </Row>
+                    <Row className="mb-3">
+                        <Form.Group as={Col}>
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" />
+                        <Form.Control type="email" placeholder="Enter email" id="recEmail" />
                         </Form.Group>
 
-                        <Form.Group as={Col} id="recName">
+                        <Form.Group as={Col}>
                         <Form.Label>Naam</Form.Label>
-                        <Form.Control placeholder="Naam" />
+                        <Form.Control placeholder="Naam" id="recName" />
                         </Form.Group>
                     </Row>
 
                     <Row className="mb-3">
-                        <Form.Group as={Col} id="recAdres1">
+                        <Form.Group as={Col} >
                         <Form.Label>Adres 1</Form.Label>
-                        <Form.Control placeholder="Grote Markt" />
+                        <Form.Control placeholder="Grote Markt" id="recAdres1"/>
                         </Form.Group>
 
-                        <Form.Group as={Col} id="recHuisnr">
+                        <Form.Group as={Col} >
                         <Form.Label>Huisnr</Form.Label>
-                        <Form.Control placeholder="5" />
+                        <Form.Control placeholder="5" id="recHuisnr"/>
                         </Form.Group>
                     </Row>
 
                     <Row className="mb-3">
-                        <Form.Group as={Col} id="recAdres2">
+                        <Form.Group as={Col} >
                             <Form.Label>Adres 2</Form.Label>
-                            <Form.Control />
+                            <Form.Control id="recAdres2"/>
                         </Form.Group>
                     </Row>
 
                     <Row className="mb-3">
 
-                        <Form.Group as={Col} id="recPC">
+                        <Form.Group as={Col} >
                         <Form.Label>Postcode</Form.Label>
-                        <Form.Control />
+                        <Form.Control id="recPC"/>
                         </Form.Group>
 
-                        <Form.Group as={Col} id="recStad">
+                        <Form.Group as={Col}>
                         <Form.Label>Stad</Form.Label>
-                        <Form.Control />
+                        <Form.Control id="recStad"/>
                         </Form.Group>
 
-                        <Form.Group as={Col} id="recLand">
+                        <Form.Group as={Col}>
                         <Form.Label>Land</Form.Label>
-                        <Form.Select defaultValue="BE">
+                        <Form.Select defaultValue="BE" id="recLand">
                             <option>BE</option>
                             <option>NL</option>
                             <option>FR</option>
@@ -139,19 +230,22 @@ class NewOrder extends React.Component {
                 <Row>
                     <h2>Details</h2>
                     <Col>
-                        <Form.Control placeholder="Referentie" />
+                        <Form.Control placeholder="Referentie" id="referentie" />
                     </Col>
                     <Col>
-                        <Form.Control placeholder="Gewicht" />
+                        <Form.Control placeholder="Gewicht" id="gewicht" />
                     </Col>
                     <Col>
-                        <Form.Control placeholder="" />
+                        <Form.Control placeholder="Leverancier" id="leverancier" />
                     </Col>
                 </Row>
             </Container>
+            <Button variant="primary" size="lg" onClick={() => this.PostNewShipment()}>
+            Maak order aan!
+            </Button>
             </Form>
 
-
+            
 
             </>
         )
@@ -159,3 +253,5 @@ class NewOrder extends React.Component {
 }
 
 export default NewOrder;
+
+

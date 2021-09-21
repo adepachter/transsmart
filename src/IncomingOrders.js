@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/esm/Container';
 import axios from 'axios';
+import { DatePicker } from "./DatePicker";
 
 
 class IncomingOrders extends React.Component {
@@ -34,22 +35,7 @@ class IncomingOrders extends React.Component {
           }
 
 
-          ///// GET INKO ORDERS
-        var data = '{"user": "arno", "password": "18e95342f51949e5823dbf5bcdceb5efd649b159580d406ea9690db23f2a4763"}';
-        var config = {
-            method: 'post',
-            url: 'https://www.inkoprint.innomedio.dev/api/getOrders',
-            data : data
-        };
-    
-        axios(config)
-            .then(function (response) {
-                var orders = response.data.shipments;
-                console.log(orders);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+       
     }
 
     StatusLabel(stat) {
@@ -62,6 +48,19 @@ class IncomingOrders extends React.Component {
                 return <Badge bg="success">Transsmart</Badge>;
             case "Verstuurd":
                 return <Badge bg="success">Verstuurd</Badge>;
+            default:
+                return <Badge bg="warning">!</Badge>;
+        }
+    }
+
+    Portal(portal) {
+        switch(portal) {
+            case "local":
+                return <Badge bg="info">Lokaal</Badge>;
+            case "inko":
+                return <Badge bg="success">INKOprint</Badge>;
+            case "inkopaper":
+                return <Badge bg="warning">INKOpaper</Badge>;
             default:
                 return <Badge bg="warning">!</Badge>;
         }
@@ -123,10 +122,20 @@ class IncomingOrders extends React.Component {
                         console.log(orderresponse);
                         console.log("HELLOOOO");
                                             // TO TRANSSMART
+                        var portal = orderresponse.portal;
+
+                        console.log("PORTAL: " + portal);
+                        var costcenter = "*";
+                        if (portal === "inko") {costcenter = "004"};
+                        
+
+                        
+
                     var orderJson = JSON.stringify([{
                         
                         "reference": orderresponse.reference,
                         "carrier": carrier,
+                        "costCenter": costcenter,
                         "value": 25,
                         "valueCurrency": "EUR",
                         "pickupDate": pickupdate,
@@ -205,10 +214,42 @@ class IncomingOrders extends React.Component {
                         .then(response => response.json())
                         .then(result => {
                             console.log(result);
-                            alert("VERSTUURD NAAR TRANSSMART");
-                            this.props.history.push('/shipments/');
+                            
+
+                        // UPDATE INKOSTATUS
+                            var inkojson = {
+                                "user": "arno",
+                                "password": "18e95342f51949e5823dbf5bcdceb5efd649b159580d406ea9690db23f2a4763",
+                                "order_reference": orderresponse.reference,
+                                "tracking_code": result[0].trackingUrl
+                            }
+                            var config = {
+                                method:     'post',
+                                url:        'https://www.inkoprint.innomedio.dev/api/setOrderTrackingCode',
+                                headers: { 
+                                    'Content-Type': 'text/plain'
+                                },
+                                data : JSON.stringify(inkojson)
+                            };
+
+                            axios(config)
+                                .then(function (response) {
+                                    var transsmartResult;
+                                    if (result[0].shipmentStatus.statusCode === "NEW") {
+                                        transsmartResult = "Transsmart: OK";
+                                    } 
+                                    alert(JSON.stringify(response.data + transsmartResult));
+                                })
+                                .catch(function (error) {
+                                    alert("Niet doorgestuurd naar INKO! \n \n" + error)
+                            });
+                        // DONE UPDATE INKO
+                            
+                            console.log(result[0].trackingUrl);
+                            console.log(orderresponse.reference);
+                            //this.props.history.push('/shipments/');
                         })
-                        .catch(error => console.log('error', error));
+                        .catch(errorTS => alert("Niet doorgestuurd naar Transsmart! \n \n Order bestaat al en labels zijn al afgedrukt"));
 
                         
 
@@ -216,7 +257,7 @@ class IncomingOrders extends React.Component {
 
                     
                 })
-                .catch(error => console.log('error', error));
+                .catch(errorTSL => alert('error', errorTSL));
 
 
               //window.location.reload(false);
@@ -240,7 +281,6 @@ class IncomingOrders extends React.Component {
 
         const DetailPakjes = () => {
             console.log(packages);
-            
             if (packages[0] === undefined) {
                 return (
                 <>
@@ -264,7 +304,13 @@ class IncomingOrders extends React.Component {
                 
                 <Form.Group className="mb-3" as={Col}>
                     <Form.Label>Datum (JJJJ-MM-DD)</Form.Label>
-                    <Form.Control id="pickupdate" rows={1} />
+                    
+                    <DatePicker
+                    value="YYYY-MM-DD"
+                    onChange={e => {
+                        console.log(e.detail.value);
+                    }}
+                    />
                 </Form.Group>
                 <Form.Group as={Col}><Form.Label>Dienst</Form.Label>
                 <Form.Select id="carrier" as={Col}>
@@ -320,6 +366,7 @@ class IncomingOrders extends React.Component {
         return (
             <>
             <h1>Inkomende orders</h1>
+            
                 <Table striped hover>
                     <thead>
                         <tr>
@@ -329,10 +376,12 @@ class IncomingOrders extends React.Component {
                             <td>Ontvanger</td>
                             <td>Locatie</td>
                             <td>Status</td>
+                            <td>Portaal</td>
                             <td>TT</td>
                         </tr>
                     </thead>
                     <tbody>
+                    
                     {orders
                     .sort((a,b) => b.id - a.id)
                     .map(order =>
@@ -353,6 +402,7 @@ class IncomingOrders extends React.Component {
                             <td>{order.receiver.name}</td>
                             <td>{order.receiver.city}</td>
                             <td>{this.StatusLabel(order.Status)}</td>
+                            <td>{this.Portal(order.portal)}</td>
                             <td>{order.published_at}</td>
                         
                         </tr>
@@ -368,6 +418,7 @@ class IncomingOrders extends React.Component {
                         <Modal.Body><Container>
                             <br />
                         <h3>Details zender/ontvanger</h3>
+                        <h4>Referentie: {detail.reference}</h4>
                         <Table bordered size="sm" id="tableDetails">
                         <thead>
                             <tr>

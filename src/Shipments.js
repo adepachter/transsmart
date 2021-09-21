@@ -47,6 +47,7 @@ class Shipments extends React.Component {
                     //console.log(result);
                     let nocontent = result.content;
                     this.setState({ shipments: nocontent })
+                    console.log(result);
                     
                 })
                 .catch(error => console.log('error', error));

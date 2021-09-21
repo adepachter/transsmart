@@ -7,6 +7,12 @@ import Container from 'react-bootstrap/container';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBar from './NavBar';
 import { BrowserRouter } from 'react-router-dom';
+// Import Duet Date Picker
+import { defineCustomElements } from "@duetds/date-picker/dist/loader";
+
+// Register Duet Date Picker
+defineCustomElements(window);
+
 
 ReactDOM.render(
   <React.StrictMode>

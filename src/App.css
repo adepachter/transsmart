@@ -49,3 +49,18 @@
   font-size: 8pt;
   vertical-align: middle;
 }
+
+.duet-date__dialog-content {
+  background-color: white!important;
+}
+
+.duet-date__input {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.is-today {
+  border: 1px solid #0d6efd
+}

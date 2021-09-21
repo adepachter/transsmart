@@ -15,6 +15,7 @@ class NewOrder extends React.Component {
         let sendPC = document.getElementById("sendPC").value;
         let sendEmail = document.getElementById("sendEmail").value;
         let sendName = document.getElementById("sendName").value;
+        let sendCountry = document.getElementById("sendLand").value;
 
         let recContact = document.getElementById("recContact").value;
         let recHuisnr = document.getElementById("recHuisnr").value;
@@ -24,11 +25,13 @@ class NewOrder extends React.Component {
         let recPC = document.getElementById("recPC").value;
         let recEmail = document.getElementById("recEmail").value;
         let recName = document.getElementById("recName").value;
-        console.log(sendContact);
+        let recCountry = document.getElementById("recLand").value;
+        console.log(sendCountry);
 
         var jsonData = {
             "reference": referentie,
             "Status": "Nieuw",
+            "portal": "local",
             "carrier": null,
             "sender": {
                 "contact": sendContact,
@@ -39,7 +42,7 @@ class NewOrder extends React.Component {
                 "addressLine3": null,
                 "zipCode": sendPC,
                 "state": null,
-                "country": "BE",
+                "country": sendCountry,
                 "accountNumber": null,
                 "type": null,
                 "telNo": null,
@@ -55,7 +58,7 @@ class NewOrder extends React.Component {
                 "addressLine3": null,
                 "zipCode": recPC,
                 "state": null,
-                "country": "BE",
+                "country": recCountry,
                 "accountNumber": null,
                 "type": null,
                 "telNo": null,
@@ -146,12 +149,11 @@ class NewOrder extends React.Component {
                         <Form.Group as={Col}>
                         <Form.Label>Land</Form.Label>
                         <Form.Select defaultValue="BE" id="sendLand">
-                            <option>BE</option>
-                            <option>NL</option>
-                            <option>FR</option>
-                            <option>LU</option>
-                            <option>DE</option>
-                            <option>anders</option>
+                            <option value="BE">BE</option>
+                            <option value="NL">NL</option>
+                            <option value="FR">FR</option>
+                            <option value="LU">LU</option>
+                            <option value="DE">DE</option>
                         </Form.Select>
 
                         </Form.Group>
@@ -214,12 +216,11 @@ class NewOrder extends React.Component {
                         <Form.Group as={Col}>
                         <Form.Label>Land</Form.Label>
                         <Form.Select defaultValue="BE" id="recLand">
-                            <option>BE</option>
-                            <option>NL</option>
-                            <option>FR</option>
-                            <option>LU</option>
-                            <option>DE</option>
-                            <option>anders</option>
+                            <option value="BE">BE</option>
+                            <option value="NL">NL</option>
+                            <option value="FR">FR</option>
+                            <option value="LU">LU</option>
+                            <option value="DE">DE</option>
                         </Form.Select>
 
                         </Form.Group>

@@ -10,7 +10,8 @@ class InkoPrint extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            inkoorders: []
+            inkoorders: [],
+            selectsort: ""
         }
     }
 
@@ -26,7 +27,8 @@ class InkoPrint extends React.Component {
         axios(config)
             .then(function (response) {
                 var orders = response.data.shipments;
-                self.setState({ inkoorders: orders })
+                self.setState({ inkoorders: orders });
+                self.setState({ selectsort: orders.delivery_date });
                 console.log(orders);
             })
             .catch(function (error) {
@@ -110,6 +112,10 @@ class InkoPrint extends React.Component {
         
     }
 
+    Sorter() {
+        console.log("test");
+    }
+
     OrderReady (element) {
         
         switch(element.order_status) {
@@ -118,7 +124,7 @@ class InkoPrint extends React.Component {
             case "Please upload new files":
                 return <Badge bg="success">Ready</Badge>;
             default:
-                return <Badge bg="warning">!</Badge>;
+                return <Badge bg="warning">{element.order_status}</Badge>;
         }
     }
 
@@ -130,13 +136,18 @@ class InkoPrint extends React.Component {
         return (
             <>
             <h1>INKOprint</h1>
+            <label for="sortby">Sorteer op:</label>
+            <select name="sortby" id="sorting">
+                <option value="orderdate" onChange={() => this.Sorter()}>Leverdatum</option>
+                <option value="id" onChange={() => this.Sorter()}>Aanmaakdatum</option>
+            </select>
             <Table striped bordered hover size="sm">
                     <thead>
                         <tr>
                         <th>ID</th>
                         <th>Referentie</th>
                         <th>Beschrijving</th>
-                        <th>Orderdatum</th>
+                        <th>Verzenddatum</th>
                         <th>Van:</th>
                         <th>Naar:</th>
                         <th>Bestemming</th>
@@ -147,7 +158,7 @@ class InkoPrint extends React.Component {
                     <tbody>
                         
             {inkoorders
-            .sort((a,b) => b.id - a.id)
+            .sort((a,b) => b.delivery_date - a.delivery_date)
             .map(element => {
                 if(!element.delivery_address) {
                     var rec = " ";
@@ -160,7 +171,7 @@ class InkoPrint extends React.Component {
                         <td>{element.id}</td>
                         <td>{element.reference}</td>
                         <td>{element.description}</td>
-                        <td>{element.order_date}</td>
+                        <td>{element.delivery_date}</td>
                         <td>{element.sender_address.name}</td>
                         <td>{element.delivery_address.name}</td>
                         <td>{rec.city}</td>

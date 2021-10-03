@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/container';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBar from './NavBar';
 import { BrowserRouter } from 'react-router-dom';
+import Context from './Context';
 // Import Duet Date Picker
 import { defineCustomElements } from "@duetds/date-picker/dist/loader";
 
@@ -19,7 +20,9 @@ ReactDOM.render(
     <BrowserRouter>
       <NavBar />
       <Container>
+        
       <App />
+      
       </Container>
     </BrowserRouter>
   </React.StrictMode>,

@@ -25,7 +25,7 @@ function NavBar() {
               <Nav.Link href="/incoming">Incoming &#10233;</Nav.Link>
               
               <Nav.Link href="/shipments">Transsmart</Nav.Link>
-              
+              <Nav.Link href="/login">Login</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -7,6 +7,7 @@ import DeleteShip from './DeleteShip';
 import IncomingOrders from './IncomingOrders';
 import NewOrder from './NewOrder';
 import InkoPrint from './inkoprint';
+import Login from './Login';
 
 
 
@@ -22,6 +23,7 @@ render() {
         <Route path="/delete" component={DeleteShip} />
         <Route path="/addnew" component={NewOrder} />
         <Route path="/inkoprint" component={InkoPrint} />
+        <Route path="/login" component={Login} />
       </Switch>
     </main>
   );

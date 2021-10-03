@@ -316,7 +316,7 @@ class IncomingOrders extends React.Component {
                 <Form.Select id="carrier" as={Col}>
                         
                         <option value="DHP">DHL</option>
-                        <option value="BPOST">BPOST</option>
+                        <option value="UPS">UPS</option>
                         <option value="DPD">DPD</option>
                     </Form.Select>
                     </Form.Group>

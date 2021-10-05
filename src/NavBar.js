@@ -1,6 +1,6 @@
 import React from 'react';
-import Navbar from 'react-bootstrap/navbar'
-import Nav from 'react-bootstrap/nav'
+import NavBar from 'react-bootstrap/NavBar'
+import Nav from 'react-bootstrap/Nav'
 import { NavDropdown } from 'react-bootstrap';
 import Container from 'react-bootstrap/container';
 import LoginButton from './components/LoginButton';

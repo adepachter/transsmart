@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NavBar from './NavBar';
+import NavBarNav from './NavBar';
 import { BrowserRouter } from 'react-router-dom';
 // Import Duet Date Picker
 import { defineCustomElements } from "@duetds/date-picker/dist/loader";
@@ -24,7 +24,7 @@ ReactDOM.render(
   redirectUri={window.location.origin}
 >
     <BrowserRouter>
-      <NavBar />
+      <NavBarNav />
       <Container>
       
       <App />

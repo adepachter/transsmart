@@ -8,16 +8,16 @@ import LogoutButton from './components/LogoutButton';
 import Profile from './components/Profile';
 import { useAuth0 } from '@auth0/auth0-react';
 
-function NavBar() {
+function NavBarNav() {
   const { user, isAuthenticated } = useAuth0();
     return (
       
-        <Navbar bg="light" expand="lg">
+        <NavBar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand href="/">INKOsmart</Navbar.Brand>
+          <NavBar.Brand href="/">INKOsmart</NavBar.Brand>
           
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
+          <NavBar.Toggle aria-controls="basic-navbar-nav" />
+          <NavBar.Collapse id="basic-navbar-nav">
           {isAuthenticated && (
             <Nav className="me-auto">
             <NavDropdown title="Acties" id="basic-nav-dropdown">
@@ -36,12 +36,12 @@ function NavBar() {
           <LoginButton />
               <LogoutButton />
               <Profile />
-          </Navbar.Collapse>
+          </NavBar.Collapse>
         </Container>
-      </Navbar>
+      </NavBar>
       
     );
   }
   
-  export default NavBar;
+  export default NavBarNav;
   

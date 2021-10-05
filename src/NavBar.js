@@ -18,7 +18,7 @@ function NavBarNav() {
           
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-          
+          {isAuthenticated && (
             <Nav className="me-auto">
             <NavDropdown title="Acties" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/addnew">Add shipment</NavDropdown.Item>
@@ -32,7 +32,7 @@ function NavBarNav() {
               <Nav.Link href="/shipments">Transsmart</Nav.Link>
               
             </Nav>
-          
+          )}
           <LoginButton />
               <LogoutButton />
               <Profile />

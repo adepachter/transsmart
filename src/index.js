@@ -18,11 +18,7 @@ defineCustomElements(window);
 
 
 ReactDOM.render(
-  <Auth0Provider
-  domain={domain}
-  clientId={clientId}
-  redirectUri={window.location.origin}
->
+
     <BrowserRouter>
       <NavBarNav />
       <Container>
@@ -31,6 +27,6 @@ ReactDOM.render(
       
       </Container>
     </BrowserRouter>
-  </Auth0Provider>,
+  ,
   document.getElementById('root')
 );

@@ -1,5 +1,5 @@
 import React from 'react';
-import NavBar from 'react-bootstrap/NavBar'
+import Navbar from 'react-bootstrap/NavBar'
 import Nav from 'react-bootstrap/Nav'
 import { NavDropdown } from 'react-bootstrap';
 import Container from 'react-bootstrap/container';
@@ -12,12 +12,12 @@ function NavBarNav() {
   const { user, isAuthenticated } = useAuth0();
     return (
       
-        <NavBar bg="light" expand="lg">
+        <Navbar bg="light" expand="lg">
         <Container>
-          <NavBar.Brand href="/">INKOsmart</NavBar.Brand>
+          <Navbar.Brand href="/">INKOsmart</Navbar.Brand>
           
-          <NavBar.Toggle aria-controls="basic-navbar-nav" />
-          <NavBar.Collapse id="basic-navbar-nav">
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
           {isAuthenticated && (
             <Nav className="me-auto">
             <NavDropdown title="Acties" id="basic-nav-dropdown">
@@ -36,9 +36,9 @@ function NavBarNav() {
           <LoginButton />
               <LogoutButton />
               <Profile />
-          </NavBar.Collapse>
+          </Navbar.Collapse>
         </Container>
-      </NavBar>
+      </Navbar>
       
     );
   }

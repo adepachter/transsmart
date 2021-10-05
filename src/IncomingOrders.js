@@ -6,7 +6,7 @@ import Badge from 'react-bootstrap/Badge';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Container from 'react-bootstrap/esm/Container';
+import Container from 'react-bootstrap/Container';
 import axios from 'axios';
 import { DatePicker } from "./DatePicker";
 

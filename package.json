@@ -13,15 +13,24 @@
     "base-64": "^1.0.0",
     "bootstrap": "^5.0.2",
     "react": "^17.0.2",
-    "react-bootstrap": "^2.0.0-beta.4",
+    "react-bootstrap": "^2.0.0-rc.0",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "web-vitals": "^1.0.1"
   },
+  "devDependencies": {
+    "@auth0/auth0-react": "^1.8.0",
+    "@duetds/date-picker": "^1.4.0",
+    "axios": "^0.21.1",
+    "bootstrap": "^5.0.2",
+    "react-bootstrap": "^2.0.0-rc.0",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0"
+  },
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
+    "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

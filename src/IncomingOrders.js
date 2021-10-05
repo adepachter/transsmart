@@ -10,7 +10,6 @@ import Container from 'react-bootstrap/esm/Container';
 import axios from 'axios';
 import { DatePicker } from "./DatePicker";
 
-
 class IncomingOrders extends React.Component {
     constructor(props) {
         super(props);
@@ -21,14 +20,15 @@ class IncomingOrders extends React.Component {
             recDetail: [],
             packages: null,
             inkoorders: [],
-            show: false
+            show: false,
+            servicelevel: []
         }
     }
 
 
     componentDidMount = async () =>  {
         try {
-            const response = await axios.get('http://localhost:1337/orders');
+            const response = await axios.get('https://inkosmart.herokuapp.com/orders');
             this.setState({ orders: response.data });
           } catch (error) {
             this.setState({ error });
@@ -66,12 +66,31 @@ class IncomingOrders extends React.Component {
         }
     }
 
+    ServiceLevel(e) {
+        const { servicelevel } = this.state;
+        var selectedcarrier = document.getElementById("carrier").value;
+        switch(selectedcarrier) {
+            case "DHP":
+                return "EUROPLUS";
+                break;
+            case "DPD":
+                return "CLASSIC";
+            case "UPS":
+                return "STANDARD";
+                break;
+        }
+        console.log(this.state.servicelevel);
+        console.log("servicelevel");
+        console.log(selectedcarrier);
+    }
+
     PostStrapi(detail) {
             var type = document.getElementById("typebox").value;
             var aantal = document.getElementById("aantalcolli").value;
             var carrier = document.getElementById("carrier").value;
+            
             var pickupdate = document.getElementById("pickupdate").value;
-            var url = 'http://localhost:1337/orders/' + detail.id;
+            var url = 'https://inkosmart.herokuapp.com/orders/' + detail.id;
         
             
             var packages = [];
@@ -129,18 +148,18 @@ class IncomingOrders extends React.Component {
                         if (portal === "inko") {costcenter = "004"};
                         
 
-                        
+
 
                     var orderJson = JSON.stringify([{
                         
-                        "reference": orderresponse.reference,
+                        "reference": orderresponse.reference + "_" + orderresponse.id,
                         "carrier": carrier,
                         "costCenter": costcenter,
                         "value": 25,
                         "valueCurrency": "EUR",
                         "pickupDate": pickupdate,
                         "service": "NON-DOCS",
-                        "serviceLevelTime": "EUROPLUS",
+                        "serviceLevelTime": this.ServiceLevel(carrier),
                         "serviceLevelOther": "",
                         "incoterms": "CPT",
                         "numberOfPackages": parseInt(aantal),
@@ -183,7 +202,7 @@ class IncomingOrders extends React.Component {
                 }]);
 
                 console.log(orderJson);
-                console.log("HELLOOOOOWWWWW");
+              
                 
                 var myHeaders = new Headers();
                 myHeaders.append("Authorization", "Basic YXBpQGJ1cm9mb3JtLmJlOm5MZjNhJU5Yc2FQeSU9TUM="); 
@@ -194,7 +213,7 @@ class IncomingOrders extends React.Component {
                 redirect: 'follow'
                 };
             
-                fetch("https://accept-api.transsmart.com/login", requestOptions)
+                fetch("https://api.transsmart.com/login", requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     //console.log(result.token)
@@ -210,7 +229,7 @@ class IncomingOrders extends React.Component {
                             redirect: 'follow'
                         };
 
-                        fetch("https://accept-api.transsmart.com/v2/shipments/BUROFORM/BOOK", requestOptions)
+                        fetch("https://api.transsmart.com/v2/shipments/BUROFORM/BOOK", requestOptions)
                         .then(response => response.json())
                         .then(result => {
                             console.log(result);
@@ -237,8 +256,9 @@ class IncomingOrders extends React.Component {
                                     var transsmartResult;
                                     if (result[0].shipmentStatus.statusCode === "NEW") {
                                         transsmartResult = "Transsmart: OK";
+                                        
                                     } 
-                                    alert(JSON.stringify(response.data + transsmartResult));
+                                    alert(JSON.stringify(transsmartResult));
                                 })
                                 .catch(function (error) {
                                     alert("Niet doorgestuurd naar INKO! \n \n" + error)
@@ -247,9 +267,9 @@ class IncomingOrders extends React.Component {
                             
                             console.log(result[0].trackingUrl);
                             console.log(orderresponse.reference);
-                            //this.props.history.push('/shipments/');
+                            this.props.history.push('/shipments/');
                         })
-                        .catch(errorTS => alert("Niet doorgestuurd naar Transsmart! \n \n Order bestaat al en labels zijn al afgedrukt"));
+                        .catch(errorTS => alert("Niet doorgestuurd naar Transsmart! \n \n Order bestond al en labels zijn al gemaakt"));
 
                         
 
@@ -273,7 +293,7 @@ class IncomingOrders extends React.Component {
         const { orders } = this.state;
         const { show } = this.state;
         const { detail, senderDetail, recDetail, packages } = this.state;
-        
+        const { servicelevel } = this.state;
         
 
         const handleClose = () => this.setState({ show: false });
@@ -313,11 +333,14 @@ class IncomingOrders extends React.Component {
                     />
                 </Form.Group>
                 <Form.Group as={Col}><Form.Label>Dienst</Form.Label>
-                <Form.Select id="carrier" as={Col}>
+                <Form.Select id="carrier" as={Col} onChange={e => this.ServiceLevel(e)}>
                         
                         <option value="DHP">DHL</option>
                         <option value="UPS">UPS</option>
                         <option value="DPD">DPD</option>
+                    </Form.Select>
+                    <Form.Select id="carrierservice" as={Col}>
+                        {this.servicelevel}
                     </Form.Select>
                     </Form.Group>
                 </Row>
@@ -365,6 +388,7 @@ class IncomingOrders extends React.Component {
 
         return (
             <>
+            
             <h1>Inkomende orders</h1>
             
                 <Table striped hover>

@@ -64,3 +64,15 @@
 .is-today {
   border: 1px solid #0d6efd
 }
+
+.profilename {
+  font-size: 8pt;
+  
+  padding: 5px;
+}
+
+.profilepicture {
+  width: 35px;
+  border-radius: 50%;
+  margin: 5px;
+}

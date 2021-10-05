@@ -12,7 +12,7 @@ class DeleteShip extends React.Component {
         redirect: 'follow'
         };
     
-        fetch("https://accept-api.transsmart.com/login", requestOptions)
+        fetch("https://api.transsmart.com/login", requestOptions)
         .then(response => response.json())
         .then(result => {
             //console.log(result.token)
@@ -25,7 +25,7 @@ class DeleteShip extends React.Component {
                 headers: myHeaders,
                 redirect: 'follow'
                 };
-                var url = "https://accept-api.transsmart.com/v2/shipments/BUROFORM/" + document.getElementById("referentie").value;
+                var url = "https://api.transsmart.com/v2/shipments/BUROFORM/" + document.getElementById("referentie").value;
 
                 fetch(url, requestOptions)
                 .then(response => response.json())

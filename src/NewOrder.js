@@ -1,6 +1,8 @@
 import React from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { useAuth0 } from '@auth0/auth0-react';
 var axios = require('axios');
+
 
 class NewOrder extends React.Component {
     
@@ -68,7 +70,7 @@ class NewOrder extends React.Component {
         };
 
         console.log(jsonData);
-        var url = 'http://localhost:1337/orders/'
+        var url = 'https://inkosmart.herokuapp.com/orders/'
         axios
               .post(url, jsonData)
               .then(response => {

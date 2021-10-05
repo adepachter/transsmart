@@ -6,6 +6,7 @@ import Badge from 'react-bootstrap/Badge'
 
 
 
+
 class InkoPrint extends React.Component {
     constructor(props) {
         super(props);
@@ -84,12 +85,12 @@ class InkoPrint extends React.Component {
         };
 
         console.log(jsonData);
-        var url = 'http://localhost:1337/orders/'
+        var url = 'https://inkosmart.herokuapp.com/orders/'
         axios
               .post(url, jsonData)
               .then(response => {
                   console.log(response);
-                  alert(response);
+                  
                   this.props.history.push('/incoming/');
               });
 
@@ -136,11 +137,11 @@ class InkoPrint extends React.Component {
         return (
             <>
             <h1>INKOprint</h1>
-            <label for="sortby">Sorteer op:</label>
+            {/* <label for="sortby">Sorteer op:</label>
             <select name="sortby" id="sorting">
                 <option value="orderdate" onChange={() => this.Sorter()}>Leverdatum</option>
                 <option value="id" onChange={() => this.Sorter()}>Aanmaakdatum</option>
-            </select>
+            </select> */}
             <Table striped bordered hover size="sm">
                     <thead>
                         <tr>

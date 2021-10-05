@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
 
+
 class Shipments extends React.Component {
     constructor(props) {
         super(props);
@@ -27,7 +28,7 @@ class Shipments extends React.Component {
         redirect: 'follow'
         };
     
-        fetch("https://accept-api.transsmart.com/login", requestOptions)
+        fetch("https://api.transsmart.com/login", requestOptions)
         .then(response => response.json())
         .then(result => {
             //console.log(result.token)
@@ -41,7 +42,7 @@ class Shipments extends React.Component {
                 redirect: 'follow'
                 };
 
-                fetch("https://accept-api.transsmart.com/v2/shipments/BUROFORM?size=100", requestOptions)
+                fetch("https://api.transsmart.com/v2/shipments/BUROFORM?size=100", requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     //console.log(result);
@@ -79,10 +80,12 @@ class Shipments extends React.Component {
                 return <Badge bg="danger">Error</Badge>;
             case "NEW":
                 return <Badge bg="info">Nieuw</Badge>;
+            case "BOOK":
+            return <Badge bg="info">Nieuw</Badge>;
             case "DONE":
                 return <Badge bg="info">Done</Badge>;
             default:
-                return <Badge bg="warning">!</Badge>;
+                return <Badge bg="warning">{stat}</Badge>;
         }
     }
 
@@ -98,7 +101,7 @@ render() {
 
     return(
         <>
-       <h1>Alle orders</h1>
+       <h1>Transsmart</h1>
        {this.state.showShipmentsDetails ? <div id="popupdetails"><FetchShipmentDetails shipment={shipment} show={show} /></div> : null }
        <Table striped hover>
            <thead>
@@ -175,7 +178,7 @@ class FetchShipmentDetails extends React.Component {
         redirect: 'follow'
         };
     
-        fetch("https://accept-api.transsmart.com/login", requestOptions)
+        fetch("https://api.transsmart.com/login", requestOptions)
         .then(response => response.json())
         .then(result => {
             //console.log(result.token)
@@ -183,7 +186,7 @@ class FetchShipmentDetails extends React.Component {
                 var token = "Bearer " + result.token;
                 var myHeaders = new Headers();
                 myHeaders.append("Authorization", token);
-                var url = "https://accept-api.transsmart.com/v2/prints/BUROFORM/" + reference + "?rawJob=true";
+                var url = "https://api.transsmart.com/v2/prints/BUROFORM/" + reference + "?rawJob=true";
                 var requestOptions = {
                 method: 'GET',
                 headers: myHeaders,

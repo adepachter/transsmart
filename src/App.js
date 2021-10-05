@@ -8,16 +8,18 @@ import IncomingOrders from './IncomingOrders';
 import NewOrder from './NewOrder';
 import InkoPrint from './inkoprint';
 import Login from './Login';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 
-class App extends React.Component {
-
-render() {
+function App() {
+  const { user, isAuthenticated } = useAuth0();
   return (
+    <>
+    {isAuthenticated && (
     <main>
       <Switch>
-        <Route path="/" component={Home} exact />
+        
         <Route path="/incoming" component={IncomingOrders} />
         <Route path="/shipments" component={ListShipments} />
         <Route path="/delete" component={DeleteShip} />
@@ -26,8 +28,15 @@ render() {
         <Route path="/login" component={Login} />
       </Switch>
     </main>
+    )}
+    <main>
+    <Switch>
+        <Route path="/" component={Home} exact />
+    </Switch>
+    </main>
+    </>
   );
 }
-}
+
 
 export default App;

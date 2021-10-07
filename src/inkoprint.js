@@ -21,7 +21,7 @@ class InkoPrint extends React.Component {
         var data = '{"user": "arno", "password": "18e95342f51949e5823dbf5bcdceb5efd649b159580d406ea9690db23f2a4763"}';
         var config = {
             method: 'post',
-            url: 'https://www.inkoprint.innomedio.dev/api/getOrders',
+            url: 'https://www.inkoprint.be/api/getOrders',
             data : data
         };
         var self = this;

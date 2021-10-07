@@ -244,7 +244,7 @@ class IncomingOrders extends React.Component {
                             }
                             var config = {
                                 method:     'post',
-                                url:        'https://www.inkoprint.innomedio.dev/api/setOrderTrackingCode',
+                                url:        'https://www.inkoprint.be/api/setOrderTrackingCode',
                                 headers: { 
                                     'Content-Type': 'text/plain'
                                 },

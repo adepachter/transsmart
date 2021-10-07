@@ -30,7 +30,7 @@ ReactDOM.render(
       <App />
       
       </Container>
-  </Auth0Provider>,
-    </BrowserRouter>
+  </Auth0Provider>
+    </BrowserRouter>,
   document.getElementById('root')
 );

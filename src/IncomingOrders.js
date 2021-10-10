@@ -9,7 +9,6 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import axios from 'axios';
 import { DatePicker } from "./DatePicker";
-import { withAuth0 } from '@auth0/auth0-react';
 
 class IncomingOrders extends React.Component {
     constructor(props) {
@@ -290,7 +289,6 @@ class IncomingOrders extends React.Component {
 
 
     render() {
-        const { user } = this.props.auth0;
         const { orders } = this.state;
         const { show } = this.state;
         const { detail, senderDetail, recDetail, packages } = this.state;
@@ -485,4 +483,4 @@ class IncomingOrders extends React.Component {
     }
 }
 
-export default withAuth0(IncomingOrders);
+export default IncomingOrders;

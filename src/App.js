@@ -9,6 +9,7 @@ import NewOrder from './NewOrder';
 import InkoPrint from './inkoprint';
 import Login from './Login';
 import { useAuth0 } from '@auth0/auth0-react';
+import Spinner from 'react-bootstrap/Spinner';
 
 
 function App() {
@@ -22,7 +23,11 @@ function App() {
   } = useAuth0();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+    <Spinner animation="border" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </Spinner>)
+  ;
   }
   if (error) {
     return <div>Oops... {error.message}</div>;

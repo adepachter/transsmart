@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { withAuth0 } from '@auth0/auth0-react';
 var axios = require('axios');
 
 
@@ -85,7 +86,7 @@ class NewOrder extends React.Component {
 
     render() {
 
-        
+        const { user } = this.props.auth0;
 
 
         return(
@@ -254,6 +255,6 @@ class NewOrder extends React.Component {
     }
 }
 
-export default NewOrder;
+export default withAuth0(NewOrder);
 
 

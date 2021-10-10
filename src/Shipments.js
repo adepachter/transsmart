@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
+import { withAuth0 } from '@auth0/auth0-react';
 
 
 class Shipments extends React.Component {
@@ -226,7 +227,7 @@ class FetchShipmentDetails extends React.Component {
     }
     
     render() {
-        
+        const { user } = this.props.auth0;
         const { shows } = this.state;
         
         //console.log(this.props.shipment);
@@ -339,5 +340,5 @@ class FetchShipmentDetails extends React.Component {
 
 
 
-export default Shipments;
+export default withAuth0(Shipments);
 

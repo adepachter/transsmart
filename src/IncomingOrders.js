@@ -28,7 +28,7 @@ class IncomingOrders extends React.Component {
 
     componentDidMount = async () =>  {
         try {
-            const response = await axios.get('https://inkosmart.herokuapp.com/orders');
+            const response = await axios.get('http://inkosmart.be:1337/orders');
             this.setState({ orders: response.data });
           } catch (error) {
             this.setState({ error });
@@ -90,7 +90,7 @@ class IncomingOrders extends React.Component {
             var carrier = document.getElementById("carrier").value;
             
             var pickupdate = document.getElementById("pickupdate").value;
-            var url = 'https://inkosmart.herokuapp.com/orders/' + detail.id;
+            var url = 'http://inkosmart.be:1337/orders/' + detail.id;
         
             
             var packages = [];

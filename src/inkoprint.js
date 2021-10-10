@@ -85,7 +85,7 @@ class InkoPrint extends React.Component {
         };
 
         console.log(jsonData);
-        var url = 'https://inkosmart.herokuapp.com//orders/'
+        var url = 'http://inkosmart.be:1337/orders/'
         axios
               .post(url, jsonData)
               .then(response => {

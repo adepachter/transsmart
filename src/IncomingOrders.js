@@ -30,6 +30,7 @@ class IncomingOrders extends React.Component {
         try {
             const response = await axios.get('http://inkosmart.be:1337/orders');
             this.setState({ orders: response.data });
+            console.log(response.data);
           } catch (error) {
             this.setState({ error });
           }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import { useAuth0 } from '@auth0/auth0-react';
 var axios = require('axios');
 
 

@@ -18,19 +18,19 @@ defineCustomElements(window);
 
 
 ReactDOM.render(
-    <BrowserRouter>
-      <NavBarNav />
   <Auth0Provider
   domain={domain}
   clientId={clientId}
   redirectUri={window.location.origin}
 >
+    <BrowserRouter>
+      <NavBarNav />
       <Container>
       
       <App />
       
       </Container>
-  </Auth0Provider>
-    </BrowserRouter>,
+    </BrowserRouter>
+  </Auth0Provider>,
   document.getElementById('root')
 );

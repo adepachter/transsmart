@@ -11,12 +11,26 @@ import Login from './Login';
 import { useAuth0 } from '@auth0/auth0-react';
 
 
-
 function App() {
-  const { user, isAuthenticated } = useAuth0();
-  return (
+  const {
+    isLoading,
+    isAuthenticated,
+    error,
+    user,
+    loginWithRedirect,
+    logout,
+  } = useAuth0();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Oops... {error.message}</div>;
+  }
+
+  if (isAuthenticated) {
+    return (
     <>
-    {isAuthenticated && (
     <main>
       <Switch>
         
@@ -28,7 +42,6 @@ function App() {
         <Route path="/login" component={Login} />
       </Switch>
     </main>
-    )}
     <main>
     <Switch>
         <Route path="/" component={Home} exact />
@@ -36,6 +49,15 @@ function App() {
     </main>
     </>
   );
+} else if (!isAuthenticated) {
+  return(
+  <main>
+    <Switch>
+        <Route path="/" component={Home} exact />
+    </Switch>
+    </main>
+  )
+}
 }
 
 

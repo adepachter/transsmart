@@ -31,9 +31,7 @@ function NavBarNav() {
               
             </Nav>
           
-          <LoginButton />
-              <LogoutButton />
-              <Profile />
+
           </Navbar.Collapse>
         </Container>
       </Navbar>

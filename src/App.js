@@ -11,6 +11,8 @@ import DeleteShip from './DeleteShip';
 import NewOrder from './NewOrder';
 import InkoPrint from './inkoprint';
 
+import './App.css';
+
 export const history = createBrowserHistory();
 
 const ProtectedRoute = ({ component, ...args }) => (

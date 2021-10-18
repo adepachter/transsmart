@@ -227,7 +227,7 @@ class FetchShipmentDetails extends React.Component {
     }
     
     render() {
-        const { user } = this.props.auth0;
+
         const { shows } = this.state;
         
         //console.log(this.props.shipment);

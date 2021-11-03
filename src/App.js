@@ -26,16 +26,9 @@ const onRedirectCallback = (appState) => {
 function App() {
 
   return (
-    <Auth0Provider
-      domain="dev-bzuojegv.us.auth0.com"
-      clientId="BzDcUWqQgLKULNMFDqZsJjr9HpcYwFpE"
-      redirectUri={window.location.origin}
-      onRedirectCallback={onRedirectCallback}
-    >
-      {/* Don't forget to add the history to your router */}
+
       <Router history={history}>
-        <Switch>
-          <Route path="/" exact component={Home} />
+          <Route exact path="/" component={Home} />
           
           <ProtectedRoute path="/incoming" component={IncomingOrders} />
           <ProtectedRoute path="/shipments" component={ListShipments} />
@@ -44,9 +37,8 @@ function App() {
           <ProtectedRoute path="/inkoprint" component={InkoPrint} />
           
           <ProtectedRoute path="/profile" component={Profile} />
-        </Switch>
       </Router>
-    </Auth0Provider>
+
   );
 }
 

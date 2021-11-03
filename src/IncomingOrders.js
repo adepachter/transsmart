@@ -143,8 +143,8 @@ class IncomingOrders extends React.Component {
                         console.log("HELLOOOO");
                                             // TO TRANSSMART
                         var portal = orderresponse.portal;
-
-                        console.log("PORTAL: " + portal);
+                        console.log(orderresponse);
+                        console.log(`PORTAL: ${portal}`);
                         var costcenter = "*";
                         if (portal === "inko") {costcenter = "004"};
                         

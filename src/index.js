@@ -5,7 +5,7 @@ import App from './App';
 import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBarNav from './NavBar';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 // Import Duet Date Picker
 import { defineCustomElements } from "@duetds/date-picker/dist/loader";
 import { Auth0Provider } from '@auth0/auth0-react';
@@ -23,14 +23,12 @@ ReactDOM.render(
   clientId={clientId}
   redirectUri={window.location.origin}
 >
-    <BrowserRouter>
       <NavBarNav />
       <Container>
       
       <App />
       
       </Container>
-    </BrowserRouter>
   </Auth0Provider>,
   document.getElementById('root')
 );

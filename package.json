@@ -2,7 +2,7 @@
   "name": "transsmart",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "",
   "dependencies": {
     "@auth0/auth0-react": "^1.8.0",
     "@duetds/date-picker": "^1.4.0",
@@ -12,6 +12,7 @@
     "axios": "^0.21.1",
     "base-64": "^1.0.0",
     "bootstrap": "^5.0.2",
+    "express": "^4.17.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-rc.0",
     "react-bootstrap-validation": "^0.1.11",
@@ -31,7 +32,7 @@
   },
   "scripts": {
     "build": "react-scripts build",
-    "start": "HTTPS=true react-scripts start",
+    "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -52,5 +53,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:8080"
 }

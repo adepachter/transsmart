@@ -30,7 +30,9 @@ function NavBarNav() {
               <Nav.Link href="/shipments">Transsmart</Nav.Link>
               
             </Nav>
-          
+            <Profile />
+            <LoginButton />
+            <LogoutButton />
 
           </Navbar.Collapse>
         </Container>

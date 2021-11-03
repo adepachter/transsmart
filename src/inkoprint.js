@@ -62,8 +62,8 @@ class InkoPrint extends React.Component {
                 "country": element.sender_address.country,
                 "accountNumber": null,
                 "type": null,
-                "telNo": null,
-                "email": null,
+                "telNo": element.sender_address.telephone,
+                "email": element.sender_address.email,
                 "name": element.sender_address.name
             },
             "receiver": {
@@ -78,8 +78,8 @@ class InkoPrint extends React.Component {
                 "country": element.delivery_address.country,
                 "accountNumber": null,
                 "type": null,
-                "telNo": null,
-                "email": null,
+                "telNo": element.delivery_address.telephone,
+                "email": element.delivery_address.email,
                 "name": element.delivery_address.name
             }
         };

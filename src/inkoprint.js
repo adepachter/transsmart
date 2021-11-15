@@ -5,8 +5,6 @@ import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge'
 
 
-
-
 class InkoPrint extends React.Component {
     constructor(props) {
         super(props);
@@ -35,6 +33,14 @@ class InkoPrint extends React.Component {
             .catch(function (error) {
                 console.log(error);
             });
+    }
+
+    CheckEmailAnonymous(sender, receiver) {
+        if (sender === "hello@inkoprint.be") {
+            return receiver;
+        } else {
+            return sender;
+        }
     }
 
     BookOrder(element) {
@@ -79,7 +85,7 @@ class InkoPrint extends React.Component {
                 "accountNumber": null,
                 "type": null,
                 "telNo": element.delivery_address.telephone,
-                "email": element.delivery_address.email,
+                "email": this.CheckEmailAnonymous(element.sender_address.email, element.delivery_address.email),
                 "name": element.delivery_address.name
             }
         };

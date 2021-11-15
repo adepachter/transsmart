@@ -43,7 +43,7 @@ class Shipments extends React.Component {
                 redirect: 'follow'
                 };
 
-                fetch("https://api.transsmart.com/v2/shipments/BUROFORM?size=10", requestOptions)
+                fetch("https://api.transsmart.com/v2/shipments/BUROFORM?costcenter=004", requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     //console.log(result);

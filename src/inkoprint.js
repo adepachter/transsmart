@@ -50,9 +50,8 @@ class InkoPrint extends React.Component {
 
         if (!element.delivery_address.name) element.delivery_address.name = element.delivery_address.company;
 
-
         var jsonData = {
-            "reference": element.reference,
+            "reference": element.reference.toString(),
             "Status": "Nieuw",
             "carrier": carrier,
             "portal": "inko",
@@ -91,11 +90,11 @@ class InkoPrint extends React.Component {
         };
 
         console.log(jsonData);
-        var url = 'https://db.inkosmart.be/orders/'
+        var url = 'https://db.inkosmart.be/orders'
         axios
               .post(url, jsonData)
               .then(response => {
-                  console.log(response);
+                  //console.log(response);
                   
                   this.props.history.push('/incoming/');
               });

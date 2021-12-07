@@ -50,6 +50,9 @@ class InkoPrint extends React.Component {
 
         if (!element.delivery_address.name) element.delivery_address.name = element.delivery_address.company;
 
+        var reference = element.reference.toString();
+        console.log(reference);
+
         var jsonData = {
             "reference": element.reference.toString(),
             "Status": "Nieuw",
